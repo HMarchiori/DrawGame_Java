@@ -1,4 +1,3 @@
-import java.util.Scanner;
 public class Application {
     private final User[] userList;
     private final User[] winnersList;
@@ -14,17 +13,17 @@ public class Application {
         drawnNumbers = new int[60];
     }
 
+    // Métodos relacionados à inicialização do jogo
     public void insertNameCards() {
-        Scanner userInput = new Scanner(System.in);
+        String[] sortedNames = {"João", "Maria", "José", "Ana", "Francisco", "Antônia", "Carlos", "Adriana", "Paulo", "Luiza", "Pedro", "Fernanda", "Lucas", "Mariana", "Luiz", "Patrícia", "Mateus", "Aline", "Marcos", "Camila"};
+        String[] letterNames = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
         for (int i = 0; i < 20; i++) {
-            System.out.println("Insert the name of the user " + (i + 1) + ":");
-            String name = userInput.nextLine();
-
-            System.out.println("Insert the amount of cards of the user " + (i + 1) + ":");
-            int cardAmount = userInput.nextInt();
-            userInput.nextLine();
-
-            userList[i] = new User(name, cardAmount);
+            int numCards = (int) (Math.random() * 15 + 1);
+            String name = sortedNames[(int) (Math.random() * 20)] + " " + letterNames[(int) (Math.random() * 12)];
+            userList[i] = new User(name, numCards);
+            System.out.println("Name: " + name);
+            System.out.println("Number of cards: " + numCards);
+            System.out.println("-----");
         }
     }
 
@@ -39,82 +38,7 @@ public class Application {
         totalSales = salesAmount * 10;
     }
 
-    public void draw() {
-        for (int i = 0; i < 25; i++) {
-            int drawnNumber;
-            do {
-                drawnNumber = (int) (Math.random() * 60 + 1);
-            } while (repeatedNumber(drawnNumber));
-
-            insertDrawnArray(drawnNumber);
-            searchSets(drawnNumber);
-
-            for (User user : userList) {
-                if (user != null && isUserWinner(user)) {
-                    return;
-                }
-            }
-        }
-    }
-
-    public Card returnCard() {
-        Card returnCard = new Card(10);
-        for (int i = 0; i < cardList.length; i++) {
-            if (cardList[i] != null) {
-                returnCard = cardList[i];
-                cardList[i] = null;
-                return returnCard;
-            }
-        }
-        return returnCard;
-    }
-
-    private void addCardsToUser(User user, int numCards) {
-        for (int i = 0; i < numCards; i++) {
-            user.insertCard(returnCard());
-        }
-    }
-
-    private boolean isUserWinner(User user) {
-        for (Card card : user.getCardArray()) {
-            if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
-                insertWinner(user);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void printInformation() {
-        printDraw();
-        printWinners();
-        printSales();
-    }
-
-    public void printDraw() {
-        System.out.println("The drawn numbers are:");
-        for (int drawnNumber : drawnNumbers) {
-            System.out.print(drawnNumber + " ");
-        }
-        System.out.println();
-    }
-
-    public void printWinners() {
-        System.out.println("The winners are:");
-        for (User user : winnersList) {
-            if (user != null) {
-                System.out.println(user.getName());
-            }
-        }
-    }
-
-    public void printSales() {
-        System.out.println("Amount of cards sold: " + salesAmount);
-        System.out.println("Total sales: " + totalSales);
-        System.out.println("Total prize: " + totalSales * 0.8);
-        System.out.println("Profit: " + totalSales * 0.2);
-    }
-
+    // Métodos auxiliares
     private boolean repeatedNumber(int num) {
         for (int drawnNumber : drawnNumbers) {
             if (drawnNumber == num) {
@@ -138,10 +62,10 @@ public class Application {
             if (user != null) {
                 for (Card card : user.getCardArray()) {
                     if (card.isDrawn(num, card.getTable1())) {
-                        card.setHitCounter1(card.getHitCounter1() + 1);
+                        card.increaseHitCounter1();
                     }
                     if (card.isDrawn(num, card.getTable2())) {
-                        card.setHitCounter2(card.getHitCounter2() + 1);
+                        card.increaseHitCounter2();
                     }
                 }
             }
@@ -155,5 +79,110 @@ public class Application {
                 break;
             }
         }
+    }
+
+    private User[] getWinners() {
+        User[] winners = new User[20];
+        int winnerCount = 0;
+
+        for (User user : userList) {
+            if (user != null) {
+                for (Card card : user.getCardArray()) {
+                    if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
+                        winners[winnerCount++] = user;
+                    }
+                }
+            }
+        }
+
+        return winners;
+    }
+
+    // Métodos relacionados ao sorteio e verificação de vencedores
+    public void draw() {
+        int drawnNumberCounter = 0;
+
+        do {
+            int drawnNumber;
+
+            do {
+                drawnNumber = (int) (Math.random() * 60 + 1);
+            } while (repeatedNumber(drawnNumber));
+
+            insertDrawnArray(drawnNumber);
+            searchSets(drawnNumber);
+            drawnNumberCounter++;
+
+        } while (drawnNumberCounter < 60 && !isWinner());
+    }
+
+    public Card returnCard() {
+        Card returnCard = new Card(10);
+        for (int i = 0; i < cardList.length; i++) {
+            if (cardList[i] != null) {
+                returnCard = cardList[i];
+                cardList[i] = null;
+                return returnCard;
+            }
+        }
+        return returnCard;
+    }
+
+    private void addCardsToUser(User user, int numCards) {
+        for (int i = 0; i < numCards; i++) {
+            user.insertCard(returnCard());
+        }
+    }
+
+    private boolean isWinner() {
+        for (User user : userList) {
+            if (user != null) {
+                for (Card card : user.getCardArray()) {
+                    if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
+                        insertWinner(user);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // Métodos relacionados à impressão de informações
+    public void printInformation() {
+        printDraw();
+        printWinners();
+        printSales();
+    }
+
+    public void printDraw() {
+        System.out.println("The drawn numbers are:");
+        for (int drawnNumber : drawnNumbers) {
+            System.out.print(drawnNumber + " ");
+        }
+        System.out.println();
+    }
+
+    public void printWinners() {
+        System.out.println("The winners are:");
+
+        User[] winners = getWinners();
+        if (winners[0] != null) {
+
+            for (User user : winners) {
+                if (user != null) {
+                    System.out.println(user.getName());
+                }
+            }
+        } else {
+            System.out.println("No winners!");
+        }
+    }
+
+    public void printSales() {
+        System.out.println("Amount of cards sold: " + salesAmount);
+        System.out.println("Total sales: " + totalSales);
+        System.out.println("Total prize: " + totalSales * 0.8);
+        System.out.println("Profit: " + totalSales * 0.2);
     }
 }

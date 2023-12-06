@@ -61,4 +61,11 @@ public class Card {
         return false;
     }
 
+    public void increaseHitCounter1() {
+        this.hitCounter1++;
+    }
+
+    public void increaseHitCounter2() {
+        this.hitCounter2++;
+    }
 }
