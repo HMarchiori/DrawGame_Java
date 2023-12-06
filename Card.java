@@ -4,31 +4,18 @@ public class Card {
     public int[] table2;
     public int hitCounter1;
     public int hitCounter2;
-
     public int[] getTable1() {
         return table1;
     }
-
     public int[] getTable2() {
         return table2;
     }
-
     public int getHitCounter1() {
         return hitCounter1;
     }
-
-    public void setHitCounter1(int hitCounter1) {
-        this.hitCounter1 = hitCounter1;
-    }
-
     public int getHitCounter2() {
         return hitCounter2;
     }
-
-    public void setHitCounter2(int hitCounter2) {
-        this.hitCounter2 = hitCounter2;
-    }
-
     public Card(int saleValue) {
         this.saleValue = saleValue;
         this.table1 = drawNumbers();
@@ -36,7 +23,6 @@ public class Card {
         this.hitCounter1 = 0;
         this.hitCounter2 = 0;
     }
-
     private int[] drawNumbers() {
         int[] table = new int[25];
         for (int i = 0; i < table.length; i++) {
@@ -60,11 +46,9 @@ public class Card {
         }
         return false;
     }
-
     public void increaseHitCounter1() {
         this.hitCounter1++;
     }
-
     public void increaseHitCounter2() {
         this.hitCounter2++;
     }
