@@ -1,7 +1,7 @@
 public class User {
     public  String name;
     public Card[] cardArray;
-    public double prizeValue;
+
 
     public String getName() {
         return name;
@@ -14,7 +14,6 @@ public class User {
     public User(String name, int cardAmount) {
         cardArray = new Card[cardAmount];
         this.name = name;
-        prizeValue = 0;
     }
 
     public void insertCard(Card card) {

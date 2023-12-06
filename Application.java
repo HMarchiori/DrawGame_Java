@@ -3,6 +3,7 @@ public class Application {
     private final User[] winnersList;
     private final Card[] cardList;
     private final int[] drawnNumbers;
+    private int numWinners;
     private int salesAmount;
     private int totalSales;
 
@@ -102,7 +103,7 @@ public class Application {
     }
 
     public Card returnCard() {
-        Card returnCard = new Card(10);
+        Card returnCard = new Card();
         for (int i = 0; i < cardList.length; i++) {
             if (cardList[i] != null) {
                 returnCard = cardList[i];
@@ -120,24 +121,29 @@ public class Application {
     }
 
     private boolean hasWinner() {
-        for (User user : userList) {
-            if (user != null) {
-                for (Card card : user.getCardArray()) {
-                    if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
-                        insertWinner(user);
-                        return true;
-                    }
+        boolean winner = false;
+        for (int i = 0; i < 20; i++) {
+            Card[] array = userList[i].getCardArray();
+            for (Card card : array) {
+                if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
+                    insertWinner(userList[i]);
+                    numWinners++;
+                    winner = true;
                 }
             }
         }
-        return false;
+        return winner;
     }
 
     // Métodos relacionados à impressão de informações
     public void printInformation() {
+        System.out.println("--------------------");
         printDraw();
+        System.out.println("--------------------");
         printWinners();
+        System.out.println("--------------------");
         printSales();
+        System.out.println("--------------------");
     }
 
     public void printDraw() {
@@ -153,11 +159,10 @@ public class Application {
                 System.out.println(); // Quebra de linha a cada 5 números
             }
 
-            if (numbersPrinted % 25 == 0) {
+            if (numbersPrinted % 10 == 0) {
                 System.out.println(); // Quebra de linha após a tabela 1
             }
         }
-        System.out.println();
     }
 
     public void printWinners() {
@@ -167,6 +172,8 @@ public class Application {
                 System.out.println(user.getName());
             }
         }
+        System.out.println("Number of winners: " + numWinners);
+        System.out.println("Prize per winner: " + totalSales * 0.8 / numWinners);
     }
 
     public void printSales() {

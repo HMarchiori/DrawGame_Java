@@ -1,5 +1,5 @@
 public class Card {
-    public int saleValue;
+
     public int[] table1;
     public int[] table2;
     public int hitCounter1;
@@ -16,8 +16,7 @@ public class Card {
     public int getHitCounter2() {
         return hitCounter2;
     }
-    public Card(int saleValue) {
-        this.saleValue = saleValue;
+    public Card() {
         this.table1 = drawNumbers();
         this.table2 = drawNumbers();
         this.hitCounter1 = 0;
