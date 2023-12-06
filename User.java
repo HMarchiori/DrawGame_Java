@@ -7,24 +7,8 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Card[] getCardArray() {
         return cardArray;
-    }
-
-    public void setCardArray(Card[] cardArray) {
-        this.cardArray = cardArray;
-    }
-
-    public double getPrizeValue() {
-        return prizeValue;
-    }
-
-    public void setPrizeValue(double prizeValue) {
-        this.prizeValue = prizeValue;
     }
 
     public User(String name, int cardAmount) {
@@ -33,13 +17,12 @@ public class User {
         prizeValue = 0;
     }
 
-    public boolean insertCard(Card card) {
+    public void insertCard(Card card) {
         for (int i = 0; i < cardArray.length; i++) {
             if (cardArray[i] == null) {
                 cardArray[i] = card;
-                return true;
+                return;
             }
         }
-        return false;
     }
 }
