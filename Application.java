@@ -81,22 +81,6 @@ public class Application {
         }
     }
 
-    private User[] getWinners() {
-        User[] winners = new User[20];
-        int winnerCount = 0;
-
-        for (User user : userList) {
-            if (user != null) {
-                for (Card card : user.getCardArray()) {
-                    if (card.getHitCounter1() == 25 || card.getHitCounter2() == 25) {
-                        winners[winnerCount++] = user;
-                    }
-                }
-            }
-        }
-
-        return winners;
-    }
 
     // Métodos relacionados ao sorteio e verificação de vencedores
     public void draw() {
@@ -113,7 +97,8 @@ public class Application {
             searchSets(drawnNumber);
             drawnNumberCounter++;
 
-        } while (drawnNumberCounter < 60 && !isWinner());
+        } while (drawnNumberCounter < 60 && !hasWinner());
+        System.out.println("Drawn numbers: " + drawnNumberCounter);
     }
 
     public Card returnCard() {
@@ -134,7 +119,7 @@ public class Application {
         }
     }
 
-    private boolean isWinner() {
+    private boolean hasWinner() {
         for (User user : userList) {
             if (user != null) {
                 for (Card card : user.getCardArray()) {
@@ -156,26 +141,31 @@ public class Application {
     }
 
     public void printDraw() {
-        System.out.println("The drawn numbers are:");
+        System.out.println("The drawn numbers are:\n");
+        int numbersPrinted = 0;
+
         for (int drawnNumber : drawnNumbers) {
-            System.out.print(drawnNumber + " ");
+            if (drawnNumber != 0) System.out.print(drawnNumber + " ");
+
+            numbersPrinted++;
+
+            if (numbersPrinted % 5 == 0) {
+                System.out.println(); // Quebra de linha a cada 5 números
+            }
+
+            if (numbersPrinted % 25 == 0) {
+                System.out.println(); // Quebra de linha após a tabela 1
+            }
         }
         System.out.println();
     }
 
     public void printWinners() {
         System.out.println("The winners are:");
-
-        User[] winners = getWinners();
-        if (winners[0] != null) {
-
-            for (User user : winners) {
-                if (user != null) {
-                    System.out.println(user.getName());
-                }
+        for (User user : winnersList) {
+            if (user != null) {
+                System.out.println(user.getName());
             }
-        } else {
-            System.out.println("No winners!");
         }
     }
 
