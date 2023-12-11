@@ -1,3 +1,4 @@
+
 public class Application {
     private final User[] userList;
     private final User[] winnersList;
@@ -6,6 +7,11 @@ public class Application {
     private int numWinners;
     private int salesAmount;
     private int totalSales;
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
 
     public Application() {
         userList = new User[20];
@@ -22,9 +28,9 @@ public class Application {
             int numCards = (int) (Math.random() * 15 + 1);
             String name = sortedNames[(int) (Math.random() * 20)] + " " + letterNames[(int) (Math.random() * 12)];
             userList[i] = new User(name, numCards);
-            System.out.println("Name: " + name);
-            System.out.println("Number of cards: " + numCards);
-            System.out.println("-----");
+            System.out.println(ANSI_CYAN + "Name: " + name + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "Number of cards: " + numCards + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "-----" + ANSI_RESET);
         }
     }
 
@@ -99,7 +105,7 @@ public class Application {
             drawnNumberCounter++;
 
         } while (drawnNumberCounter < 60 && !hasWinner());
-        System.out.println("Drawn numbers: " + drawnNumberCounter);
+        System.out.println(ANSI_CYAN + "Drawn numbers: " + drawnNumberCounter + ANSI_RESET);
     }
 
     public Card returnCard() {
@@ -137,21 +143,21 @@ public class Application {
 
     // Métodos relacionados à impressão de informações
     public void printInformation() {
-        System.out.println("--------------------");
+        System.out.println(ANSI_CYAN + "--------------------" + ANSI_RESET);
         printDraw();
-        System.out.println("--------------------");
+        System.out.println(ANSI_PURPLE + "--------------------" + ANSI_RESET);
         printWinners();
-        System.out.println("--------------------");
+        System.out.println(ANSI_GREEN + "--------------------" + ANSI_RESET);
         printSales();
-        System.out.println("--------------------");
+        System.out.println(ANSI_GREEN + "--------------------" + ANSI_RESET);
     }
 
     public void printDraw() {
-        System.out.println("The drawn numbers are:\n");
+        System.out.println(ANSI_CYAN + "The drawn numbers are:\n" + ANSI_RESET);
         int numbersPrinted = 0;
 
         for (int drawnNumber : drawnNumbers) {
-            if (drawnNumber != 0) System.out.print(drawnNumber + " ");
+            if (drawnNumber != 0) System.out.print(ANSI_GREEN + drawnNumber + " " + ANSI_RESET);
 
             numbersPrinted++;
 
@@ -166,20 +172,20 @@ public class Application {
     }
 
     public void printWinners() {
-        System.out.println("The winners are:");
+        System.out.println(ANSI_PURPLE + "The winners are:" + ANSI_RESET);
         for (User user : winnersList) {
             if (user != null) {
-                System.out.println(user.getName());
+                System.out.println(ANSI_PURPLE + user.getName() + ANSI_RESET);
             }
         }
-        System.out.println("Number of winners: " + numWinners);
-        System.out.println("Prize per winner: " + totalSales * 0.8 / numWinners);
+        System.out.println(ANSI_PURPLE + "Number of winners: " + numWinners + ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "Prize per winner: " + totalSales * 0.8 / numWinners + ANSI_RESET);
     }
 
     public void printSales() {
-        System.out.println("Amount of cards sold: " + salesAmount);
-        System.out.println("Total sales: " + totalSales);
-        System.out.println("Total prize: " + totalSales * 0.8);
-        System.out.println("Profit: " + totalSales * 0.2);
+        System.out.println(ANSI_GREEN + "Amount of cards sold: " + salesAmount + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Total sales: " + totalSales + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Total prize: " + totalSales * 0.8 + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Profit: " + totalSales * 0.2 + ANSI_RESET);
     }
 }
