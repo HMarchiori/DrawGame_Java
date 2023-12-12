@@ -1,6 +1,6 @@
 public class User {
-    public  String name;
-    public Card[] cardArray;
+    private final String name;
+    private final Card[] cardArray;
 
 
     public String getName() {

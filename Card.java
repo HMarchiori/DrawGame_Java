@@ -1,9 +1,9 @@
 public class Card {
 
-    public int[] table1;
-    public int[] table2;
-    public int hitCounter1;
-    public int hitCounter2;
+    private final int[] table1;
+    private final int[] table2;
+    private int hitCounter1;
+    private int hitCounter2;
     public int[] getTable1() {
         return table1;
     }
